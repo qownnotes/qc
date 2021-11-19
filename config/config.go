@@ -11,4 +11,6 @@ type FlagConfig struct {
 	Command   bool
 	FilterTag string
 	Color     bool
+	SelectCmd string
+	Delimiter string
 }

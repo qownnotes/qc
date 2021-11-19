@@ -76,7 +76,7 @@ func filter(options []string, tag string) (commands []string, err error) {
 
 	var buf bytes.Buffer
 	selectCmd := fmt.Sprintf("%s %s",
-		config.Conf.General.SelectCmd, strings.Join(options, " "))
+		config.Flag.SelectCmd, strings.Join(options, " "))
 	err = run(selectCmd, strings.NewReader(text), &buf)
 	if err != nil {
 		return nil, nil

@@ -33,6 +33,8 @@ func init() {
 	// cobra.OnInitialize(initConfig)
 	RootCmd.AddCommand(versionCmd)
 
+	config.Flag.SelectCmd = "fzf" // peco
+	config.Flag.Delimiter = " "
 	RootCmd.PersistentFlags().IntVarP(&config.Flag.Port, "port", "p", 22322, "socket server port in QOwnNotes")
 	RootCmd.PersistentFlags().BoolVarP(&config.Flag.Debug, "debug", "", false, "debug mode")
 }
