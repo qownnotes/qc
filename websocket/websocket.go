@@ -2,7 +2,10 @@ package websocket
 
 import (
 	"encoding/json"
+	"github.com/qownnotes/qc/config"
 	"log"
+	"strconv"
+
 	// "net/http"
 	"net/url"
 	// "strings"
@@ -31,7 +34,7 @@ const (
 )
 
 func FetchSnippets() {
-	u := url.URL{Scheme: "ws", Host: "127.0.0.1:22223"}
+	u := url.URL{Scheme: "ws", Host: "127.0.0.1:" + strconv.Itoa(config.Conf.QOwnNotes.WebSocketPort)}
 	log.Printf("connecting to %s", u.String())
 
 	c, _, err := websocket.DefaultDialer.Dial(u.String(), nil)
@@ -41,8 +44,8 @@ func FetchSnippets() {
 	defer c.Close()
 
 	message := Message{
-		Token: "thetoken",
-		Type:  "getCommands",
+		Token: config.Conf.QOwnNotes.Token,
+		Type:  "getCommandSnippets",
 	}
 
 	m, err := json.Marshal(message)
@@ -52,6 +55,28 @@ func FetchSnippets() {
 		log.Fatal("write message:", err)
 	}
 
+	_, msg, err := c.ReadMessage()
+	if err != nil {
+		// log.Printf("other error: %v", err)
+		if websocket.IsUnexpectedCloseError(err, websocket.CloseGoingAway) {
+			log.Printf("error: %v", err)
+		}
+	}
+
+	var resultMessage Message
+	err = json.Unmarshal(msg, &resultMessage)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	switch resultMessage.Type {
+	case "tokenQuery":
+		log.Fatal("Please execute \"qc configure\" to configure your token for QOwnNotes!")
+	default:
+		log.Fatal("Did not understand response from QOwnNotes!")
+	}
+
+	// TODO: how to handle a timeout?
 }
 
 //

@@ -32,7 +32,7 @@ func (snippets *Snippets) Load() error {
 
 	snippets.Snippets = append(snippets.Snippets, SnippetInfo{
 		Description: "test",
-		Command:     "echo test",
+		Command:     "echo test\necho test2",
 		Tag:         []string{"test"},
 		Output:      "test",
 	})

@@ -3,12 +3,14 @@ package cmd
 import (
 	"fmt"
 	"os"
+	"path/filepath"
 
 	"github.com/qownnotes/qc/config"
 	"github.com/spf13/cobra"
 )
 
 var (
+	configFile string
 	version = "dev"
 )
 
@@ -30,12 +32,10 @@ func Execute() {
 }
 
 func init() {
-	// cobra.OnInitialize(initConfig)
+	cobra.OnInitialize(initConfig)
 	RootCmd.AddCommand(versionCmd)
 
-	config.Flag.SelectCmd = "fzf" // peco
-	config.Flag.Delimiter = " "
-	RootCmd.PersistentFlags().IntVarP(&config.Flag.Port, "port", "p", 22222, "socket server port in QOwnNotes")
+	RootCmd.PersistentFlags().StringVar(&configFile, "config", "", "config file (default is $HOME/.config/qc/config.toml)")
 	RootCmd.PersistentFlags().BoolVarP(&config.Flag.Debug, "debug", "", false, "debug mode")
 }
 
@@ -46,4 +46,21 @@ var versionCmd = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
 		fmt.Printf("qc version %s\n", version)
 	},
+}
+
+// initConfig reads in config file and ENV variables if set.
+func initConfig() {
+	if configFile == "" {
+		dir, err := config.GetDefaultConfigDir()
+		if err != nil {
+			fmt.Fprintf(os.Stderr, "%v", err)
+			os.Exit(1)
+		}
+		configFile = filepath.Join(dir, "config.toml")
+	}
+
+	if err := config.Conf.Load(configFile); err != nil {
+		fmt.Fprintf(os.Stderr, "%v", err)
+		os.Exit(1)
+	}
 }
