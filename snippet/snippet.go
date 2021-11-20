@@ -3,6 +3,8 @@ package snippet
 import (
 	"bytes"
 	"sort"
+
+	"github.com/qownnotes/qc/websocket"
 )
 
 type Snippets struct {
@@ -26,12 +28,14 @@ func (snippets *Snippets) Load() error {
 	//	return fmt.Errorf("Failed to load snippet file. %v", err)
 	//}
 
+	websocket.FetchSnippets()
+
 	snippets.Snippets = append(snippets.Snippets, SnippetInfo{
-        Description: "test",
-        Command:     "echo test",
-        Tag:         []string{"test"},
-        Output:      "test",
-    })
+		Description: "test",
+		Command:     "echo test",
+		Tag:         []string{"test"},
+		Output:      "test",
+	})
 
 	snippets.Order()
 	return nil
