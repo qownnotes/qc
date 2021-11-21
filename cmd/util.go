@@ -52,6 +52,8 @@ func filter(options []string, tag string) (commands []string, err error) {
 		snippets = filteredSnippets
 	}
 
+	//log.Printf("snippets: %v", snippets)
+
 	snippetTexts := map[string]entity.SnippetInfo{}
 	var text string
 	for _, s := range snippets.Snippets {
@@ -77,13 +79,15 @@ func filter(options []string, tag string) (commands []string, err error) {
 
 	var buf bytes.Buffer
 	selectCmd := fmt.Sprintf("%s %s",
-		config.Flag.SelectCmd, strings.Join(options, " "))
+		config.Conf.General.SelectCmd, strings.Join(options, " "))
 	err = run(selectCmd, strings.NewReader(text), &buf)
 	if err != nil {
 		return nil, nil
 	}
 
 	lines := strings.Split(strings.TrimSuffix(buf.String(), "\n"), "\n")
+
+	//log.Printf("lines: %v", lines)
 
 	params := dialog.SearchForParams(lines)
 	if params != nil {
@@ -97,5 +101,8 @@ func filter(options []string, tag string) (commands []string, err error) {
 		snippetInfo := snippetTexts[line]
 		commands = append(commands, fmt.Sprint(snippetInfo.Command))
 	}
+
+	//log.Printf("commands: %v", commands)
+
 	return commands, nil
 }
