@@ -48,7 +48,7 @@ const (
 
 func FetchSnippetsData() []entity.SnippetInfo {
 	u := url.URL{Scheme: "ws", Host: "127.0.0.1:" + strconv.Itoa(config.Conf.QOwnNotes.WebSocketPort)}
-	log.Printf("Connecting to QOwnNotes on %s", u.String())
+	//log.Printf("Connecting to QOwnNotes on %s", u.String())
 
 	c, _, err := websocket.DefaultDialer.Dial(u.String(), nil)
 	if err != nil {
@@ -85,13 +85,12 @@ func FetchSnippetsData() []entity.SnippetInfo {
 	case "tokenQuery":
 		log.Fatal("Please execute \"qc configure\" and configure your token from QOwnNotes!")
 	case "commandSnippets":
-		log.Printf("CommandSnippets: %v", resultMessage.CommandSnippets)
+		//log.Printf("CommandSnippets: %v", resultMessage.CommandSnippets)
 		return resultMessage.CommandSnippets
 	default:
 		log.Fatal("Did not understand response from QOwnNotes!")
 	}
 
-	// TODO: how to handle a timeout?
 	return []entity.SnippetInfo{}
 }
 
