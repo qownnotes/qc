@@ -48,11 +48,11 @@ const (
 
 func FetchSnippetsData() []entity.SnippetInfo {
 	u := url.URL{Scheme: "ws", Host: "127.0.0.1:" + strconv.Itoa(config.Conf.QOwnNotes.WebSocketPort)}
-	log.Printf("connecting to %s", u.String())
+	log.Printf("Connecting to QOwnNotes on %s", u.String())
 
 	c, _, err := websocket.DefaultDialer.Dial(u.String(), nil)
 	if err != nil {
-		log.Fatal("dial:", err)
+		log.Fatal("Couldn't connect to QOwnNotes websocket, did you enable the socket server? Error: ", err)
 	}
 	defer c.Close()
 
@@ -65,15 +65,12 @@ func FetchSnippetsData() []entity.SnippetInfo {
 
 	err = c.WriteMessage(websocket.TextMessage, m)
 	if err != nil {
-		log.Fatal("write message:", err)
+		log.Fatal("Couldn't send command to QOwnNotes: ", err)
 	}
 
 	_, msg, err := c.ReadMessage()
 	if err != nil {
-		// log.Printf("other error: %v", err)
-		if websocket.IsUnexpectedCloseError(err, websocket.CloseGoingAway) {
-			log.Printf("error: %v", err)
-		}
+		log.Fatalf("Couldn't read message from QOwnNotes: %v", err)
 	}
 
 	// log.Printf("msg: %v", msg)
@@ -81,12 +78,12 @@ func FetchSnippetsData() []entity.SnippetInfo {
 	var resultMessage ResultMessage
 	err = json.Unmarshal(msg, &resultMessage)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("Couldn't interpret message from QOwnNotes: %v", err)
 	}
 
 	switch resultMessage.Type {
 	case "tokenQuery":
-		log.Fatal("Please execute \"qc configure\" to configure your token for QOwnNotes!")
+		log.Fatal("Please execute \"qc configure\" and configure your token from QOwnNotes!")
 	case "commandSnippets":
 		log.Printf("CommandSnippets: %v", resultMessage.CommandSnippets)
 		return resultMessage.CommandSnippets
