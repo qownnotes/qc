@@ -3,6 +3,7 @@ package websocket
 import (
 	"encoding/json"
 	"github.com/qownnotes/qc/config"
+	"github.com/qownnotes/qc/entity"
 	"log"
 	"strconv"
 
@@ -19,6 +20,18 @@ type Message struct {
 	Type  string `json:"type"`
 }
 
+type ResultMessage struct {
+	Type            string `json:"type"`
+	CommandSnippets []entity.SnippetInfo `json:"data"`
+	// Data 			string `json:"data"`
+}
+
+// type CommandSnippet struct {
+// 	Command      string `json:"command"`
+// 	Description  string `json:"description"`
+// 	Tags  		 []string `json:"tags"`
+// }
+
 const (
 	// Time allowed to write a message to the peer.
 	writeWait = 10 * time.Second
@@ -33,7 +46,7 @@ const (
 	maxMessageSize = 20971520
 )
 
-func FetchSnippets() {
+func FetchSnippetsData() []entity.SnippetInfo {
 	u := url.URL{Scheme: "ws", Host: "127.0.0.1:" + strconv.Itoa(config.Conf.QOwnNotes.WebSocketPort)}
 	log.Printf("connecting to %s", u.String())
 
@@ -63,7 +76,9 @@ func FetchSnippets() {
 		}
 	}
 
-	var resultMessage Message
+	// log.Printf("msg: %v", msg)
+
+	var resultMessage ResultMessage
 	err = json.Unmarshal(msg, &resultMessage)
 	if err != nil {
 		log.Fatal(err)
@@ -72,11 +87,15 @@ func FetchSnippets() {
 	switch resultMessage.Type {
 	case "tokenQuery":
 		log.Fatal("Please execute \"qc configure\" to configure your token for QOwnNotes!")
+	case "commandSnippets":
+		log.Printf("CommandSnippets: %v", resultMessage.CommandSnippets)
+		return resultMessage.CommandSnippets
 	default:
 		log.Fatal("Did not understand response from QOwnNotes!")
 	}
 
 	// TODO: how to handle a timeout?
+	return []entity.SnippetInfo{}
 }
 
 //

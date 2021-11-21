@@ -3,6 +3,7 @@ package cmd
 import (
 	"bytes"
 	"fmt"
+	"github.com/qownnotes/qc/entity"
 	"io"
 	"os"
 	"os/exec"
@@ -51,7 +52,7 @@ func filter(options []string, tag string) (commands []string, err error) {
 		snippets = filteredSnippets
 	}
 
-	snippetTexts := map[string]snippet.SnippetInfo{}
+	snippetTexts := map[string]entity.SnippetInfo{}
 	var text string
 	for _, s := range snippets.Snippets {
 		command := s.Command

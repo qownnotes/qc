@@ -4,21 +4,15 @@ import (
 	"bytes"
 	"sort"
 
+	"github.com/qownnotes/qc/entity"
 	"github.com/qownnotes/qc/websocket"
 )
 
 type Snippets struct {
-	Snippets []SnippetInfo
+	Snippets []entity.SnippetInfo
 }
 
-type SnippetInfo struct {
-	Description string
-	Command     string
-	Tag         []string
-	Output      string
-}
-
-// Load reads toml file.
+// Load reads snippets.
 func (snippets *Snippets) Load() error {
 	//snippetFile := config.Conf.General.SnippetFile
 	//if _, err := os.Stat(snippetFile); os.IsNotExist(err) {
@@ -28,14 +22,19 @@ func (snippets *Snippets) Load() error {
 	//	return fmt.Errorf("Failed to load snippet file. %v", err)
 	//}
 
-	websocket.FetchSnippets()
-
-	snippets.Snippets = append(snippets.Snippets, SnippetInfo{
+	snippets.Snippets = append(snippets.Snippets, entity.SnippetInfo{
 		Description: "test",
 		Command:     "echo test\necho test2",
 		Tag:         []string{"test"},
 		Output:      "test",
 	})
+
+	snippets.Snippets = websocket.FetchSnippetsData()
+
+	// err := json.Unmarshal(data, &snippets.Snippets)
+	// if err != nil {
+	// 	log.Fatal(err)
+	// }
 
 	snippets.Order()
 	return nil
@@ -94,19 +93,19 @@ func (snippets *Snippets) reverse() {
 	}
 }
 
-type ByCommand []SnippetInfo
+type ByCommand []entity.SnippetInfo
 
 func (a ByCommand) Len() int           { return len(a) }
 func (a ByCommand) Swap(i, j int)      { a[i], a[j] = a[j], a[i] }
 func (a ByCommand) Less(i, j int) bool { return a[i].Command > a[j].Command }
 
-type ByDescription []SnippetInfo
+type ByDescription []entity.SnippetInfo
 
 func (a ByDescription) Len() int           { return len(a) }
 func (a ByDescription) Swap(i, j int)      { a[i], a[j] = a[j], a[i] }
 func (a ByDescription) Less(i, j int) bool { return a[i].Description > a[j].Description }
 
-type ByOutput []SnippetInfo
+type ByOutput []entity.SnippetInfo
 
 func (a ByOutput) Len() int           { return len(a) }
 func (a ByOutput) Swap(i, j int)      { a[i], a[j] = a[j], a[i] }
