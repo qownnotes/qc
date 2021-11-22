@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"github.com/qownnotes/qc/entity"
 	"io"
+	"log"
 	"os"
 	"os/exec"
 	"runtime"
@@ -82,7 +83,7 @@ func filter(options []string, tag string) (commands []string, err error) {
 		config.Conf.General.SelectCmd, strings.Join(options, " "))
 	err = run(selectCmd, strings.NewReader(text), &buf)
 	if err != nil {
-		return nil, nil
+		log.Fatalf("Couldn't execute select command '%v': %v", selectCmd, err)
 	}
 
 	lines := strings.Split(strings.TrimSuffix(buf.String(), "\n"), "\n")
