@@ -15,6 +15,10 @@ For more information on how to add commands please see
 The QOwnNotes command-line snippet manager is based on the
 [pet CLI Snippet Manager](https://github.com/knqyf263/pet).
 
+## Dependencies
+
+- [fzf](https://github.com/junegunn/fzf) or [peco](https://github.com/peco/peco)
+
 ## Usage
 
 ```
