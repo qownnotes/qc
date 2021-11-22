@@ -1,5 +1,7 @@
 # QOwnNotes command-line snippet manager
 
+[GitHub](https://github.com/qownnotes/qc)
+
 You can use the QOwnNotes command-line snippet manager to execute command snippets stored
 in notes in [QOwnNotes](https://www.qownnotes.org/) from the command line.
 
