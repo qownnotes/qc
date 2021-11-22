@@ -1,0 +1,58 @@
+release:
+  github:
+    owner: pbek
+    name: qc
+  name_template: '{{.Tag}}'
+#brews:
+#  -
+#    tap:
+#      owner: pbek
+#      name: homebrew-qc
+#    commit_author:
+#      name: goreleaserbot
+#      email: patrizio@bekerle.com
+#    description: "QOwnNotes command-line snippet manager"
+#    homepage: "https://github.com/qownnotes/qc"
+#    dependencies:
+#      - fzf
+#    install: |
+#      bin.install Dir['qc']
+#      zsh_completion.install "misc/completions/zsh/_qc"
+#    test: |
+#      system "#{bin}/qc"
+builds:
+- goos:
+  - linux
+  - darwin
+  - windows
+  goarch:
+  - amd64
+  - arm
+  - arm64
+  - "386"
+  goarm:
+  - "6"
+  main: .
+  ldflags: -s -w -X github.com/qownnotes/qc/cmd.version={{.Version}}
+archives:
+  -
+    format: tar.gz
+    name_template: '{{ .Binary }}_{{ .Version }}_{{ .Os }}_{{ .Arch }}{{ if .Arm }}v{{
+      .Arm }}{{ end }}'
+    files:
+    - LICENSE*
+    - README*
+    - CHANGELOG*
+    - misc/completions/zsh/_qc
+nfpms:
+  -
+    homepage: https://github.com/qownnotes/qc
+    maintainer: Patrizio Bekerle <patrizio@bekerle.com>
+    description: "QOwnNotes command-line snippet manager"
+    bindir: /usr/local/bin
+    license: MIT
+    formats:
+    - deb
+    - rpm
+checksum:
+  name_template: '{{ .ProjectName }}_{{ .Version }}_checksums.txt'
