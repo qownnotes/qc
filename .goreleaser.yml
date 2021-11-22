@@ -1,6 +1,6 @@
 release:
   github:
-    owner: pbek
+    owner: qownnotes
     name: qc
   name_template: '{{.Tag}}'
 #brews:
