@@ -1,5 +1,9 @@
 # QOwnNotes command-line snippet manager changelog
 
+## v0.2.0
+
+- Don't throw an error if selectCmd was exited with an error code (e.g. by Ctrl+C)
+
 ## v0.1.0
 
 - Support for fetching snippets from QOwnNotes via websocket
