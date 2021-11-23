@@ -1,23 +1,28 @@
 # QOwnNotes command-line snippet manager
 
 [GitHub](https://github.com/qownnotes/qc) |
-[Changelog](https://github.com/qownnotes/qc/blob/main/CHANGELOG.md)
+[Changelog](https://github.com/qownnotes/qc/blob/main/CHANGELOG.md) |
+[Releases](https://github.com/qownnotes/qc/releases)
 
-You can use the QOwnNotes command-line snippet manager to execute command snippets stored
-in notes in [QOwnNotes](https://www.qownnotes.org/) from the command line.
+You can use the **QOwnNotes command-line snippet manager** to **execute command snippets** stored
+in **notes** in [QOwnNotes](https://www.qownnotes.org/) from the command line.
 
-You can use notes with a special tag to store command snippets, which you can
-execute from the command-line snippet manager.
+![qc](qc.png)
 
-For more information on how to add commands please see
+You can use **notes with a special tag** to store **command snippets**, which you can
+**execute from the command-line snippet manager**.
+
+![commands](commands.png)
+
+For more information on **how to add commands and configuration** please see
 [Command-line Snippet Manager](https://www.qownnotes.org/getting-started/command-line-snippet-manager.html).
 
-The QOwnNotes command-line snippet manager is based on the
+The QOwnNotes command-line snippet manager is based on the wonderful
 [pet CLI Snippet Manager](https://github.com/knqyf263/pet).
 
 ## Dependencies
 
-- [fzf](https://github.com/junegunn/fzf) or [peco](https://github.com/peco/peco)
+- [fzf](https://github.com/junegunn/fzf) or [peco](https://github.com/peco/peco) needs to be installed
 
 ## Usage
 
