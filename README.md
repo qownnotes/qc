@@ -9,7 +9,7 @@ in **notes** in [QOwnNotes](https://www.qownnotes.org/) from the command line.
 
 ![qc](qc.png)
 
-You can use **notes with a special tag** to store **command snippets**, which you can
+You can use **notes with a special tag** (`commands` by default) to store **command snippets**, which you can
 **execute from the command-line snippet manager**.
 
 ![commands](commands.png)
