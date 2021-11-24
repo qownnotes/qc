@@ -50,7 +50,7 @@ Flags:
 Use "qc [command] --help" for more information about a command.
 ```
 
-# Configuration
+## Configuration
 
 Run `qc configure`.
 
