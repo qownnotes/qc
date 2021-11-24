@@ -22,7 +22,7 @@ The QOwnNotes command-line snippet manager is based on the wonderful
 
 ## Dependencies
 
-- [fzf](https://github.com/junegunn/fzf) or [peco](https://github.com/peco/peco) needs to be installed to find commands on the command-line
+- [fzf](https://github.com/junegunn/fzf) or [peco](https://github.com/peco/peco) needs to be installed to search for commands on the command-line
 
 ## Usage
 
