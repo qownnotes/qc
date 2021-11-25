@@ -14,29 +14,9 @@ type Snippets struct {
 
 // Load reads snippets.
 func (snippets *Snippets) Load() error {
-	//snippetFile := config.Conf.General.SnippetFile
-	//if _, err := os.Stat(snippetFile); os.IsNotExist(err) {
-	//	return nil
-	//}
-	//if _, err := toml.DecodeFile(snippetFile, snippets); err != nil {
-	//	return fmt.Errorf("Failed to load snippet file. %v", err)
-	//}
-
-	snippets.Snippets = append(snippets.Snippets, entity.SnippetInfo{
-		Description: "test",
-		Command:     "echo test\necho test2",
-		Tag:         []string{"test"},
-		Output:      "test",
-	})
-
 	snippets.Snippets = websocket.FetchSnippetsData()
-
-	// err := json.Unmarshal(data, &snippets.Snippets)
-	// if err != nil {
-	// 	log.Fatal(err)
-	// }
-
 	snippets.Order()
+
 	return nil
 }
 
