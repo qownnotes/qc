@@ -20,6 +20,25 @@ For more information on **how to add commands and configuration** please see
 The QOwnNotes command-line snippet manager is based on the wonderful
 [pet CLI Snippet Manager](https://github.com/knqyf263/pet).
 
+## Installation
+
+Visit the [latest release page](https://github.com/qownnotes/qc/releases/latest)
+and download the version you need.
+
+If you have [jq](https://stedolan.github.io/jq) installed you can also use this snippet
+to download and install for example the latest Linux AMD64 AppImage to `/usr/local/bin/qc`:
+
+```bash
+curl https://api.github.com/repos/qownnotes/qc/releases/latest | \
+jq '.assets[] | select(.browser_download_url | endswith("_linux_amd64.tar.gz")) | .browser_download_url' | \
+xargs curl -Lo /tmp/qc.tar.gz && \
+tar xfz /tmp/qc.tar.gz -C /tmp && \
+rm /tmp/qc.tar.gz && \
+sudo mv /tmp/qc /usr/local/bin/qc && \
+/usr/local/bin/qc --version
+```
+
+
 ## Dependencies
 
 [fzf](https://github.com/junegunn/fzf) (fuzzy search) or [peco](https://github.com/peco/peco)
