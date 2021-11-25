@@ -1,5 +1,8 @@
 # QOwnNotes command-line snippet manager changelog
 
+## v0.3.0
+- Enable sorting of snippets via settings and allow sorting case-insensitively
+
 ## v0.2.0
 
 - Cache snippets in case QOwnNotes is not running

@@ -3,7 +3,9 @@ package snippet
 import (
 	"bytes"
 	"sort"
+	"strings"
 
+	"github.com/qownnotes/qc/config"
 	"github.com/qownnotes/qc/entity"
 	"github.com/qownnotes/qc/websocket"
 )
@@ -44,8 +46,8 @@ func (snippets *Snippets) ToString() (string, error) {
 // Order snippets regarding SortBy option defined in config toml
 // Prefix "-" reverses the order, default is "recency", "+<expressions>" is the same as "<expression>"
 func (snippets *Snippets) Order() {
-	//sortBy := config.Conf.General.SortBy
-	sortBy := "command"
+	sortBy := config.Conf.General.SortBy
+
 	switch {
 	case sortBy == "command" || sortBy == "+command":
 		sort.Sort(ByCommand(snippets.Snippets))
@@ -75,15 +77,19 @@ func (snippets *Snippets) reverse() {
 
 type ByCommand []entity.SnippetInfo
 
-func (a ByCommand) Len() int           { return len(a) }
-func (a ByCommand) Swap(i, j int)      { a[i], a[j] = a[j], a[i] }
-func (a ByCommand) Less(i, j int) bool { return a[i].Command > a[j].Command }
+func (a ByCommand) Len() int      { return len(a) }
+func (a ByCommand) Swap(i, j int) { a[i], a[j] = a[j], a[i] }
+func (a ByCommand) Less(i, j int) bool {
+	return strings.ToLower(a[i].Command) > strings.ToLower(a[j].Command)
+}
 
 type ByDescription []entity.SnippetInfo
 
-func (a ByDescription) Len() int           { return len(a) }
-func (a ByDescription) Swap(i, j int)      { a[i], a[j] = a[j], a[i] }
-func (a ByDescription) Less(i, j int) bool { return a[i].Description > a[j].Description }
+func (a ByDescription) Len() int      { return len(a) }
+func (a ByDescription) Swap(i, j int) { a[i], a[j] = a[j], a[i] }
+func (a ByDescription) Less(i, j int) bool {
+	return strings.ToLower(a[i].Description) > strings.ToLower(a[j].Description)
+}
 
 type ByOutput []entity.SnippetInfo
 
