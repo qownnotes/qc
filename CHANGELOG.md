@@ -6,7 +6,7 @@
 ## v0.2.0
 
 - Cache snippets in case QOwnNotes is not running
-- Don't throw an error if selectCmd was exited with an error code (e.g. by Ctrl+C)
+- Don't throw an error if selectCmd was exited with an error code (e.g. by `Ctrl + C`)
 
 ## v0.1.0
 
