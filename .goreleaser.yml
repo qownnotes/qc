@@ -3,23 +3,21 @@ release:
     owner: qownnotes
     name: qc
   name_template: '{{.Tag}}'
-#brews:
-#  -
-#    tap:
-#      owner: pbek
-#      name: homebrew-qc
-#    commit_author:
-#      name: goreleaserbot
-#      email: patrizio@bekerle.com
-#    description: "QOwnNotes command-line snippet manager"
-#    homepage: "https://github.com/qownnotes/qc"
-#    dependencies:
-#      - fzf
-#    install: |
-#      bin.install Dir['qc']
-#      zsh_completion.install "misc/completions/zsh/_qc"
-#    test: |
-#      system "#{bin}/qc"
+# https://goreleaser.com/customization/homebrew/
+brews:
+  -
+    tap:
+      owner: qownnotes
+      name: homebrew-qc
+    description: "QOwnNotes command-line snippet manager"
+    homepage: "https://github.com/qownnotes/qc"
+    dependencies:
+      - fzf
+    install: |
+      bin.install Dir['qc']
+      zsh_completion.install "misc/completions/zsh/_qc"
+    test: |
+      system "#{bin}/qc"
 builds:
 - goos:
   - linux
