@@ -38,6 +38,22 @@ sudo mv /tmp/qc /usr/local/bin/qc && \
 /usr/local/bin/qc --version
 ```
 
+### macOS / Homebrew
+
+You can use homebrew on macOS to install qc.
+
+```bash
+brew install qownnotes/qc/qc
+```
+
+If you receive an error (`Error: qownnotes/qc/qc 64 already installed`) during `brew upgrade`,
+try the following command:
+
+```bash
+brew unlink pet && brew uninstall pet
+rm -rf /usr/local/Cellar/qc/64
+brew install qownnotes/qc/qc
+```
 
 ## Dependencies
 

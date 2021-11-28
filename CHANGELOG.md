@@ -1,5 +1,8 @@
 # QOwnNotes command-line snippet manager changelog
 
+## v0.3.2
+- Add Homebrew tap for qc (`brew install qownnotes/qc/qc`)
+
 ## v0.3.0
 - Enable sorting of snippets via settings and allow sorting case-insensitively
 
