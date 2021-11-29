@@ -35,7 +35,7 @@ xargs curl -Lo /tmp/qc.tar.gz && \
 tar xfz /tmp/qc.tar.gz -C /tmp && \
 rm /tmp/qc.tar.gz && \
 sudo mv /tmp/qc /usr/local/bin/qc && \
-/usr/local/bin/qc --version
+/usr/local/bin/qc version
 ```
 
 ### macOS / Homebrew
