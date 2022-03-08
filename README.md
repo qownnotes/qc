@@ -50,7 +50,7 @@ If you receive an error (`Error: qownnotes/qc/qc 64 already installed`) during `
 try the following command:
 
 ```bash
-brew unlink pet && brew uninstall pet
+brew unlink qc && brew uninstall qc
 rm -rf /usr/local/Cellar/qc/64
 brew install qownnotes/qc/qc
 ```
