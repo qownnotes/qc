@@ -1,5 +1,11 @@
 # QOwnNotes command-line snippet manager changelog
 
+## v0.4.0
+- Add support for note folder switching (for [#5](https://github.com/qownnotes/qc/issues/5))
+  - Use `qc switch` to get a list of note folders to select which note folder to switch to
+  - Use `qc switch -f <note-folder-id>` to make QOwnNotes switch to another note folder instantly
+  - Needs OwnNotes at least at version 22.7.1
+
 ## v0.3.2
 - Add Homebrew tap for qc (`brew install qownnotes/qc/qc`)
 
