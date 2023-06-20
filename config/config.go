@@ -15,14 +15,14 @@ var Conf Config
 
 // Config is a struct of config
 type Config struct {
-	General GeneralConfig
+	General   GeneralConfig
 	QOwnNotes QOwnNotesConfig
 }
 
 // QOwnNotesConfig is a struct of config for QOwnNotes
 type QOwnNotesConfig struct {
-	Token          string `toml:"token"`
-	WebSocketPort  int    `toml:"websocket_port"`
+	Token         string `toml:"token"`
+	WebSocketPort int    `toml:"websocket_port"`
 }
 
 // Flag is global flag variable
@@ -36,14 +36,15 @@ type FlagConfig struct {
 	FilterTag string
 	Color     bool
 	Delimiter string
+	Last      bool
 }
 
 // GeneralConfig is a struct of general config
 type GeneralConfig struct {
-	Editor      string `toml:"editor"`
-	Column      int    `toml:"column"`
-	SelectCmd   string `toml:"selectcmd"`
-	SortBy      string `toml:"sortby"`
+	Editor    string `toml:"editor"`
+	Column    int    `toml:"column"`
+	SelectCmd string `toml:"selectcmd"`
+	SortBy    string `toml:"sortby"`
 }
 
 // Load loads a config toml
@@ -69,6 +70,8 @@ func (cfg *Config) Load(file string) error {
 	if cfg.General.Editor == "" && runtime.GOOS != "windows" {
 		if isCommandAvailable("sensible-editor") {
 			cfg.General.Editor = "sensible-editor"
+		} else if isCommandAvailable("nvim") {
+			cfg.General.Editor = "nvim"
 		} else {
 			cfg.General.Editor = "vim"
 		}
