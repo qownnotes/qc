@@ -1,8 +1,11 @@
 package cmd
 
 import (
+	"errors"
 	"fmt"
+	"log"
 	"os"
+	"path/filepath"
 	"strings"
 
 	"github.com/fatih/color"
@@ -19,25 +22,46 @@ var execCmd = &cobra.Command{
 	RunE:  execute,
 }
 
+var (
+	lastCmdFile string
+)
+
 func execute(cmd *cobra.Command, args []string) (err error) {
 	flag := config.Flag
 
 	var options []string
+	var command string
+	var writeLastCmd bool
+
 	if flag.Query != "" {
 		options = append(options, fmt.Sprintf("--query %s", shellescape.Quote(flag.Query)))
 	}
 
-	commands, err := filter(options, flag.FilterTag)
-	if err != nil {
-		return err
+	if config.Flag.Last {
+		command = readLastCmdFile()
 	}
-	command := strings.Join(commands, "; ")
+
+	if command == "" {
+		commands, err := filter(options, flag.FilterTag)
+		if err != nil {
+			return err
+		}
+		command = strings.Join(commands, "; ")
+		writeLastCmd = true
+	}
+
 	if config.Flag.Debug {
 		fmt.Printf("Command: %s\n", command)
 	}
 	if config.Flag.Command {
 		fmt.Printf("%s: %s\n", color.YellowString("Command"), command)
 	}
+
+	if writeLastCmd {
+		// store last command
+		writeLastCmdFile(command)
+	}
+
 	return run(command, os.Stdin, os.Stdout)
 }
 
@@ -51,5 +75,42 @@ func init() {
 		`Filter tag`)
 	execCmd.Flags().BoolVarP(&config.Flag.Command, "command", "c", false,
 		`Show the command with the plain text before executing`)
+	execCmd.Flags().BoolVarP(&config.Flag.Last, "last", "l", false,
+		`Execute the last command`)
+
+	initLastCmdFile()
 }
 
+func initLastCmdFile() {
+	if lastCmdFile == "" {
+		dir, err := config.GetDefaultConfigDir()
+		if err != nil {
+			fmt.Fprintf(os.Stderr, "%v", err)
+			os.Exit(1)
+		}
+
+		lastCmdFile = filepath.Join(dir, "lastcmd")
+	}
+}
+
+func writeLastCmdFile(cmd string) {
+	if err := os.WriteFile(lastCmdFile, []byte(cmd), 0600); err != nil {
+		log.Fatal("Could not write last command file: ", err)
+	}
+}
+
+func readLastCmdFile() string {
+	_, err := os.Stat(lastCmdFile)
+
+	if errors.Is(err, os.ErrNotExist) {
+		return ""
+	}
+
+	data, err := os.ReadFile(lastCmdFile)
+
+	if err != nil {
+		log.Fatal("Could not read last command file: ", err)
+	}
+
+	return string(data)
+}

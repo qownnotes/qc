@@ -1,6 +1,8 @@
 # QOwnNotes command-line snippet manager changelog
 
 ## v0.5.0
+- The last executed command is now stored and can be executed again via `qc exec --last`
+  (for [#9](https://github.com/qownnotes/qc/issues/9))
 - Neovim is now also used to edit the config file 
 
 ## v0.4.0
