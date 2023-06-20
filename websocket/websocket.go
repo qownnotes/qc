@@ -245,7 +245,7 @@ func initSnippetCacheFile() {
 }
 
 func writeSnippetCacheFile(data []byte) {
-	if err := os.WriteFile(snippetCacheFile, data, 0666); err != nil {
+	if err := os.WriteFile(snippetCacheFile, data, 0600); err != nil {
 		log.Fatal("Could not write snippet cache file: ", err)
 	}
 }
