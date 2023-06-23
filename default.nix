@@ -4,7 +4,7 @@ buildGoModule rec {
   pname = "qc";
   version = "0.5.0";
 
-  src = builtins.fetchGit ./.;
+  src = builtins.path { path = ./.; name = "qc"; };
 
   vendorSha256 = "sha256-7t5rQliLm6pMUHhtev/kNrQ7AOvmA/rR93SwNQhov6o=";
 
@@ -21,8 +21,10 @@ buildGoModule rec {
   ];
 
   postInstall = ''
-    installShellCompletion --cmd qc \
-      --zsh ./misc/completions/zsh/_qc
+   installShellCompletion --cmd foobar \ 
+     --bash <($out/bin/foobar --bash-completion) \ 
+     --fish <($out/bin/foobar --fish-completion) \ 
+     --zsh <($out/bin/foobar --zsh-completion) 
   '';
 
   meta = with lib; {
