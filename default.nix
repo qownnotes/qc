@@ -21,10 +21,12 @@ buildGoModule rec {
   ];
 
   postInstall = ''
-   installShellCompletion --cmd foobar \ 
-     --bash <($out/bin/foobar --bash-completion) \ 
-     --fish <($out/bin/foobar --fish-completion) \ 
-     --zsh <($out/bin/foobar --zsh-completion) 
+    # for some reason we need a writable home directory, or the completion files will be empty
+    export HOME=$(mktemp -d)
+    installShellCompletion --cmd qc \
+      --bash <($out/bin/qc completion bash) \
+      --fish <($out/bin/qc completion fish) \
+      --zsh <($out/bin/qc completion zsh)
   '';
 
   meta = with lib; {
