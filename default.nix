@@ -2,7 +2,7 @@
 
 buildGoModule rec {
   pname = "qc";
-  version = "0.5.0";
+  version = "0.5.1";
 
   src = builtins.path { path = ./.; name = "qc"; };
 

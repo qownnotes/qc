@@ -57,7 +57,7 @@ func execute(cmd *cobra.Command, args []string) (err error) {
 		fmt.Printf("%s: %s\n", color.YellowString("Command"), command)
 	}
 
-	if writeLastCmd {
+	if writeLastCmd && command != "" {
 		// store last command
 		writeLastCmdFile(command)
 	}

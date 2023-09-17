@@ -1,5 +1,9 @@
 # QOwnNotes command-line snippet manager changelog
 
+## v0.5.1
+- The last selected command is now only stored when there actually was a command selected and
+  the dialog wasn't quit without selecting a command (for [#9](https://github.com/qownnotes/qc/issues/9))
+
 ## v0.5.0
 - The last executed command is now stored and can be executed again via `qc exec --last`
   (for [#9](https://github.com/qownnotes/qc/issues/9))
