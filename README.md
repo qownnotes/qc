@@ -26,7 +26,7 @@ Visit the [latest release page](https://github.com/qownnotes/qc/releases/latest)
 and download the version you need.
 
 If you have [jq](https://stedolan.github.io/jq) installed you can also use this snippet
-to download and install for example the latest Linux AMD64 AppImage to `/usr/local/bin/qc`:
+to download and install for example the latest Linux AMD64 binary to `/usr/local/bin/qc`:
 
 ```bash
 curl https://api.github.com/repos/qownnotes/qc/releases/latest | \
