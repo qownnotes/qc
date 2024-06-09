@@ -73,6 +73,7 @@ Available Commands:
 completion  generate the autocompletion script for the specified shell
 configure   Edit config file
 exec        Run the selected commands
+exec --tast Repeat the last executed command
 help        Help about any command
 search      Search snippets
 version     Print the version number
