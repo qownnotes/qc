@@ -91,7 +91,7 @@ func init() {
 	execCmd.Flags().BoolVarP(&config.Flag.Last, "last", "l", false,
 		`Execute the last command`)
 	execCmd.Flags().BoolVarP(&config.Flag.Atuin, "atuin", "a", false,
-		`Store command in atuin history`)
+		`Store single-line command in Atuin history`)
 
 	initLastCmdFile()
 }
