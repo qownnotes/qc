@@ -3,6 +3,7 @@
 ## v0.6.0
 - Add support for storing commands in [Atuin](https://atuin.sh/) on execution
   when using the `--atuin` flag (for [#15](https://github.com/qownnotes/qc/issues/15))
+  - This only works for single-line commands
 - Update dependencies
 
 ## v0.5.1
