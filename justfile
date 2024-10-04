@@ -23,12 +23,13 @@ build:
 
 # Execute the built binary
 [group('build')]
-exec:
-    ./qc exec
+exec +ARGS='':
+    ./qc exec --color {{ARGS}}
 
 # Build and execute in one command
 [group('build')]
-build-exec: build exec
+build-exec +ARGS='': build
+   just exec {{ARGS}}
 
 # Install the project
 [group('build')]
