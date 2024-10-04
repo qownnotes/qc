@@ -10,6 +10,12 @@ default:
 dep:
     go mod download
 
+# Update dependencies
+[group('build')]
+update:
+    go get -u
+    go mod tidy
+
 # Build the project
 [group('build')]
 build:
