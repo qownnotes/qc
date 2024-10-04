@@ -6,6 +6,7 @@ import (
 	"log"
 	"os"
 	"path/filepath"
+	"strconv"
 	"strings"
 
 	"github.com/fatih/color"
@@ -53,13 +54,25 @@ func execute(cmd *cobra.Command, args []string) (err error) {
 	if config.Flag.Debug {
 		fmt.Printf("Command: %s\n", command)
 	}
+
 	if config.Flag.Command {
 		fmt.Printf("%s: %s\n", color.YellowString("Command"), command)
 	}
 
-	if writeLastCmd && command != "" {
+	if command == "" {
+		return nil
+	}
+
+	if writeLastCmd {
 		// store last command
 		writeLastCmdFile(command)
+	}
+
+	// Check if the command has only a single line
+	if config.Flag.Atuin && !strings.Contains(command, "\n") {
+		escapedCommand := strconv.Quote(command)
+		command = `histid=$(atuin history start -- ` + escapedCommand + ")\n" + command +
+			"\natuin history end --exit $? $histid"
 	}
 
 	return run(command, os.Stdin, os.Stdout)
@@ -77,6 +90,8 @@ func init() {
 		`Show the command with the plain text before executing`)
 	execCmd.Flags().BoolVarP(&config.Flag.Last, "last", "l", false,
 		`Execute the last command`)
+	execCmd.Flags().BoolVarP(&config.Flag.Atuin, "atuin", "a", false,
+		`Store command in atuin history`)
 
 	initLastCmdFile()
 }

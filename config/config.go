@@ -33,6 +33,7 @@ type FlagConfig struct {
 	Debug     bool
 	Query     string
 	Command   bool
+	Atuin     bool
 	FilterTag string
 	Color     bool
 	Delimiter string
