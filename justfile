@@ -24,7 +24,7 @@ build:
 # Execute the built binary
 [group('build')]
 exec +ARGS='':
-    ./qc exec --color {{ARGS}}
+    ./qc exec {{ARGS}}
 
 # Build and execute in one command
 [group('build')]
