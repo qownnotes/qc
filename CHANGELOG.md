@@ -1,5 +1,9 @@
 # QOwnNotes command-line snippet manager changelog
 
+## v0.6.1
+- The `--color` flag now shows the command description in a calmer green, instead of red
+  (for [#16](https://github.com/qownnotes/qc/issues/16))
+
 ## v0.6.0
 - Add support for storing commands in [Atuin](https://atuin.sh/) on execution
   when using the `--atuin` flag (for [#15](https://github.com/qownnotes/qc/issues/15))
