@@ -110,3 +110,12 @@ For example for the Fish shell you can use:
 ```bash
 qc completion fish > ~/.config/fish/completions/qc.fish
 ```
+
+## Atuin integration
+
+Executed commands can be stored in [Atuin](https://atuin.sh/) on execution
+when using the `--atuin` flag. They will then show up in the Atuin command history.
+
+```bash
+qc exec --atuin
+```
