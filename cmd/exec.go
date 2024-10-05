@@ -6,7 +6,6 @@ import (
 	"log"
 	"os"
 	"path/filepath"
-	"strconv"
 	"strings"
 
 	"github.com/fatih/color"
@@ -68,14 +67,30 @@ func execute(cmd *cobra.Command, args []string) (err error) {
 		writeLastCmdFile(command)
 	}
 
-	// Check if the command has only a single line
-	if config.Flag.Atuin && !strings.Contains(command, "\n") {
-		escapedCommand := strconv.Quote(command)
-		command = `histid=$(atuin history start -- ` + escapedCommand + ")\n" + command +
+	// Add commands to the Atuin history
+	if config.Flag.Atuin {
+		escapedCommand := escapeCommandForShell(command)
+		command = `histid=$(atuin history start -- ` + escapedCommand + `` + ")\n" + command +
 			"\natuin history end --exit $? $histid"
 	}
 
 	return run(command, os.Stdin, os.Stdout)
+}
+
+// escapeCommandForShell escapes a command for use in a shell script.
+// It also works for multi-line commands.
+func escapeCommandForShell(command string) string {
+	// Trim and split the command into lines
+	lines := strings.Split(strings.Trim(command, "\n"), "\n")
+
+	// Quote each line individually and join with literal $'\n'
+	quotedLines := make([]string, len(lines))
+	for i, line := range lines {
+		// Use single quotes to avoid most escaping issues
+		quotedLines[i] = "'" + strings.ReplaceAll(line, "'", "'\"'\"'") + "'"
+	}
+
+	return strings.Join(quotedLines, "$'\\n'")
 }
 
 func init() {
