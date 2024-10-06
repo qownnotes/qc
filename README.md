@@ -63,6 +63,9 @@ for commands on the command-line.
 
 By default `fzf` is used for searching, but you can use `peco` by setting it with `qc configure`.
 
+On some system you might need to set `fzf --ansi` when you use the qc `--color` flag.
+If you don't want the fuzzy search of fzf, you can use the fzf `--exact` flag.
+
 ## Usage
 
 ```
