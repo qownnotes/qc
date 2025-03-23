@@ -5,6 +5,10 @@
 default:
     @just --list
 
+# Aliases
+
+alias fmt := format
+
 # Download dependencies
 [group('build')]
 dep:
@@ -65,3 +69,8 @@ just-format:
         echo "Formatting $file"
         just --fmt --unstable -f "$file"
     done
+
+# Format all files
+[group('linter')]
+format args='':
+    nix-shell -p treefmt go nodePackages.prettier shfmt nixfmt-rfc-style statix taplo --run "treefmt {{ args }}"
