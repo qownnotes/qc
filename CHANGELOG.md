@@ -1,6 +1,7 @@
 # QOwnNotes command-line snippet manager changelog
 
 ## v0.6.1
+
 - The `--atuin` flag now also add commands to [Atuin](https://atuin.sh/) for multi-line commands
   (for [#15](https://github.com/qownnotes/qc/issues/15))
 - The `--color` flag now shows the command description in a calmer green, instead of red
