@@ -13,10 +13,10 @@ rm -rf ./pkg/
 mkdir ./pkg
 
 for PLATFORM in $(find ./out -mindepth 1 -maxdepth 1 -type d); do
-        PLATFORM_NAME=$(basename ${PLATFORM})
+  PLATFORM_NAME=$(basename ${PLATFORM})
 
-        pushd ${PLATFORM}
-        cp -r ../../misc ./
-        zip -r ../../pkg/${PLATFORM_NAME}.zip ./*
-        popd
+  pushd ${PLATFORM}
+  cp -r ../../misc ./
+  zip -r ../../pkg/${PLATFORM_NAME}.zip ./*
+  popd
 done

@@ -4,10 +4,10 @@ on:
     branches:
       - main
     paths-ignore:
-      - '*.md'
-      - 'doc/**'
-      - 'LICENSE'
-      - 'justfile'
+      - "*.md"
+      - "doc/**"
+      - "LICENSE"
+      - "justfile"
   pull_request:
 env:
   GO_VERSION: "1.22"

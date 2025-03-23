@@ -1,15 +1,24 @@
-{ buildGoModule, installShellFiles, lib }:
+{
+  buildGoModule,
+  installShellFiles,
+  lib,
+}:
 
 buildGoModule rec {
   pname = "qc";
   version = "0.5.1";
 
-  src = builtins.path { path = ./.; name = "qc"; };
+  src = builtins.path {
+    path = ./.;
+    name = "qc";
+  };
 
   vendorSha256 = "sha256-7t5rQliLm6pMUHhtev/kNrQ7AOvmA/rR93SwNQhov6o=";
 
   ldflags = [
-    "-s" "-w" "-X=github.com/qownnotes/qc/cmd.version=${version}"
+    "-s"
+    "-w"
+    "-X=github.com/qownnotes/qc/cmd.version=${version}"
   ];
 
   doCheck = false;
