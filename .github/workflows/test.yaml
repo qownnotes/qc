@@ -10,7 +10,7 @@ on:
       - "justfile"
   pull_request:
 env:
-  GO_VERSION: "1.22"
+  GO_VERSION: "1.25"
 jobs:
   test:
     name: Test
