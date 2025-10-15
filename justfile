@@ -28,12 +28,12 @@ build:
 # Execute the built binary
 [group('build')]
 exec +ARGS='':
-    ./qc exec {{ARGS}}
+    ./qc exec {{ ARGS }}
 
 # Build and execute in one command
 [group('build')]
 build-exec +ARGS='': build
-   just exec {{ARGS}}
+    just exec {{ ARGS }}
 
 # Install the project
 [group('build')]
@@ -60,17 +60,7 @@ nix-build:
 nix-build-force:
     nix-build -E '((import <nixpkgs> {}).callPackage (import ./default.nix) { })' --check
 
-# Format all justfiles
-[group('linter')]
-just-format:
-    #!/usr/bin/env bash
-    # Find all files named "justfile" recursively and run just --fmt --unstable on them
-    find . -type f -name "justfile" -print0 | while IFS= read -r -d '' file; do
-        echo "Formatting $file"
-        just --fmt --unstable -f "$file"
-    done
-
-# Format all files
+# Format all files using pre-commit
 [group('linter')]
 format args='':
-    nix-shell -p treefmt go nodePackages.prettier shfmt nixfmt-rfc-style statix taplo --run "treefmt {{ args }}"
+    pre-commit run --all-files {{ args }}
