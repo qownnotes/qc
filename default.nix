@@ -6,14 +6,14 @@
 
 buildGoModule rec {
   pname = "qc";
-  version = "0.5.1";
+  version = "0.6.2";
 
   src = builtins.path {
     path = ./.;
     name = "qc";
   };
 
-  vendorSha256 = "sha256-7t5rQliLm6pMUHhtev/kNrQ7AOvmA/rR93SwNQhov6o=";
+  vendorHash = "sha256-ad4IuGv2y4L9cS7pf/fEVJ3wXwy9pEIegMTbUoJHPmg=";
 
   ldflags = [
     "-s"
