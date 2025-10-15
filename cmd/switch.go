@@ -3,11 +3,12 @@ package cmd
 import (
 	"bufio"
 	"fmt"
+	"os"
+	"strconv"
+
 	"github.com/qownnotes/qc/config"
 	"github.com/qownnotes/qc/websocket"
 	"github.com/spf13/cobra"
-	"os"
-	"strconv"
 )
 
 // switchCmd represents the switch command

@@ -101,17 +101,6 @@ func GetDefaultConfigDir() (dir string, err error) {
 	return dir, nil
 }
 
-func expandPath(s string) string {
-	if len(s) >= 2 && s[0] == '~' && os.IsPathSeparator(s[1]) {
-		if runtime.GOOS == "windows" {
-			s = filepath.Join(os.Getenv("USERPROFILE"), s[2:])
-		} else {
-			s = filepath.Join(os.Getenv("HOME"), s[2:])
-		}
-	}
-	return os.Expand(s, os.Getenv)
-}
-
 func isCommandAvailable(name string) bool {
 	cmd := exec.Command("/bin/sh", "-c", "command -v "+name)
 	if err := cmd.Run(); err != nil {

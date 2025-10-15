@@ -4,15 +4,15 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"github.com/qownnotes/qc/config"
-	"github.com/qownnotes/qc/entity"
 	"log"
 	"os"
 	"path/filepath"
 	"strconv"
 
+	"github.com/qownnotes/qc/config"
+	"github.com/qownnotes/qc/entity"
+
 	"net/url"
-	"time"
 
 	"github.com/gorilla/websocket"
 )
@@ -54,39 +54,32 @@ type NoteFolderSwitchResultMessage struct {
 // 	Tags  		 []string `json:"tags"`
 // }
 
-const (
-	// Time allowed to write a message to the peer.
-	writeWait = 10 * time.Second
-
-	// Time allowed to read the next pong message from the peer.
-	pongWait = 60 * time.Second
-
-	// Send pings to peer with this period. Must be less than pongWait.
-	pingPeriod = (pongWait * 9) / 10
-
-	// 20MB maximum message size allowed from peer.
-	maxMessageSize = 20971520
-)
-
 func FetchSnippetsData() []entity.SnippetInfo {
 	// log.Printf("Connecting to QOwnNotes on %s", u.String())
 
 	initSnippetCacheFile()
-	var snippetData []byte = nil
+	var snippetData []byte
 
 	c, err := connectSocket()
 	if err != nil {
 		snippetData = readSnippetCacheFile()
 
 		if snippetData == nil {
-			log.Fatal("Couldn't connect to QOwnNotes websocket, did you enable the socket server? Error: ", err)
+			log.Fatal(
+				"Couldn't connect to QOwnNotes websocket, did you enable the socket server? Error: ",
+				err,
+			)
 		} else {
 			log.Println("Couldn't connect to QOwnNotes websocket, but found cached data in " + snippetCacheFile)
 		}
 	}
 
 	if snippetData == nil {
-		defer c.Close()
+		defer func() {
+			if err := c.Close(); err != nil {
+				log.Printf("Error closing connection: %v", err)
+			}
+		}()
 
 		message := Message{
 			Token: config.Conf.QOwnNotes.Token,
@@ -94,9 +87,11 @@ func FetchSnippetsData() []entity.SnippetInfo {
 		}
 
 		m, err := json.Marshal(message)
-
-		err = c.WriteMessage(websocket.TextMessage, m)
 		if err != nil {
+			log.Fatal("Couldn't marshal message: ", err)
+		}
+
+		if err = c.WriteMessage(websocket.TextMessage, m); err != nil {
 			log.Fatal("Couldn't send command to QOwnNotes: ", err)
 		}
 
@@ -128,14 +123,21 @@ func FetchSnippetsData() []entity.SnippetInfo {
 }
 
 func FetchNoteFolderData() (noteFolderInfo []entity.NoteFolderInfo, currentId int) {
-	var noteFolderData []byte = nil
+	var noteFolderData []byte
 
 	c, err := connectSocket()
 	if err != nil {
-		log.Fatal("Couldn't connect to QOwnNotes websocket, did you enable the socket server? Error: ", err)
+		log.Fatal(
+			"Couldn't connect to QOwnNotes websocket, did you enable the socket server? Error: ",
+			err,
+		)
 	}
 
-	defer c.Close()
+	defer func() {
+		if err := c.Close(); err != nil {
+			log.Printf("Error closing connection: %v", err)
+		}
+	}()
 
 	message := Message{
 		Token: config.Conf.QOwnNotes.Token,
@@ -143,9 +145,11 @@ func FetchNoteFolderData() (noteFolderInfo []entity.NoteFolderInfo, currentId in
 	}
 
 	m, err := json.Marshal(message)
-
-	err = c.WriteMessage(websocket.TextMessage, m)
 	if err != nil {
+		log.Fatal("Couldn't marshal message: ", err)
+	}
+
+	if err = c.WriteMessage(websocket.TextMessage, m); err != nil {
 		log.Fatal("Couldn't send command to QOwnNotes: ", err)
 	}
 
@@ -158,7 +162,10 @@ func FetchNoteFolderData() (noteFolderInfo []entity.NoteFolderInfo, currentId in
 	// log.Printf("Connecting to QOwnNotes on vs", noteFolderData)
 	err = json.Unmarshal(noteFolderData, &resultMessage)
 	if err != nil {
-		log.Fatalf("Couldn't interpret message from QOwnNotes: %v\nYou need at least QOwnNotes 22.7.1!", err)
+		log.Fatalf(
+			"Couldn't interpret message from QOwnNotes: %v\nYou need at least QOwnNotes 22.7.1!",
+			err,
+		)
 	}
 
 	switch resultMessage.Type {
@@ -175,13 +182,19 @@ func FetchNoteFolderData() (noteFolderInfo []entity.NoteFolderInfo, currentId in
 }
 
 func SwitchNoteFolder(id int) {
-	var noteFolderData []byte = nil
 	c, err := connectSocket()
 	if err != nil {
-		log.Fatal("Couldn't connect to QOwnNotes websocket, did you enable the socket server? Error: ", err)
+		log.Fatal(
+			"Couldn't connect to QOwnNotes websocket, did you enable the socket server? Error: ",
+			err,
+		)
 	}
 
-	defer c.Close()
+	defer func() {
+		if err := c.Close(); err != nil {
+			log.Printf("Error closing connection: %v", err)
+		}
+	}()
 
 	message := NoteFolderSwitchMessage{
 		Token: config.Conf.QOwnNotes.Token,
@@ -190,13 +203,15 @@ func SwitchNoteFolder(id int) {
 	}
 
 	m, err := json.Marshal(message)
-
-	err = c.WriteMessage(websocket.TextMessage, m)
 	if err != nil {
+		log.Fatal("Couldn't marshal message: ", err)
+	}
+
+	if err = c.WriteMessage(websocket.TextMessage, m); err != nil {
 		log.Fatal("Couldn't send command to QOwnNotes: ", err)
 	}
 
-	_, noteFolderData, err = c.ReadMessage()
+	_, noteFolderData, err := c.ReadMessage()
 	if err != nil {
 		log.Fatalf("Couldn't read message from QOwnNotes: %v", err)
 	}
@@ -204,7 +219,10 @@ func SwitchNoteFolder(id int) {
 	var resultMessage NoteFolderSwitchResultMessage
 	err = json.Unmarshal(noteFolderData, &resultMessage)
 	if err != nil {
-		log.Fatalf("Couldn't interpret message from QOwnNotes: %v\nYou need at least QOwnNotes 22.7.1!", err)
+		log.Fatalf(
+			"Couldn't interpret message from QOwnNotes: %v\nYou need at least QOwnNotes 22.7.1!",
+			err,
+		)
 	}
 
 	switch resultMessage.Type {
@@ -228,7 +246,10 @@ func connectSocket() (*websocket.Conn, error) {
 }
 
 func getSocketUrl() url.URL {
-	u := url.URL{Scheme: "ws", Host: "127.0.0.1:" + strconv.Itoa(config.Conf.QOwnNotes.WebSocketPort)}
+	u := url.URL{
+		Scheme: "ws",
+		Host:   "127.0.0.1:" + strconv.Itoa(config.Conf.QOwnNotes.WebSocketPort),
+	}
 	return u
 }
 

@@ -48,23 +48,23 @@ func (snippets *Snippets) ToString() (string, error) {
 func (snippets *Snippets) Order() {
 	sortBy := config.Conf.General.SortBy
 
-	switch {
-	case sortBy == "command" || sortBy == "+command":
+	switch sortBy {
+	case "command", "+command":
 		sort.Sort(ByCommand(snippets.Snippets))
-	case sortBy == "-command":
+	case "-command":
 		sort.Sort(sort.Reverse(ByCommand(snippets.Snippets)))
 
-	case sortBy == "description" || sortBy == "+description":
+	case "description", "+description":
 		sort.Sort(ByDescription(snippets.Snippets))
-	case sortBy == "-description":
+	case "-description":
 		sort.Sort(sort.Reverse(ByDescription(snippets.Snippets)))
 
-	case sortBy == "output" || sortBy == "+output":
+	case "output", "+output":
 		sort.Sort(ByOutput(snippets.Snippets))
-	case sortBy == "-output":
+	case "-output":
 		sort.Sort(sort.Reverse(ByOutput(snippets.Snippets)))
 
-	case sortBy == "-recency":
+	case "-recency":
 		snippets.reverse()
 	}
 }

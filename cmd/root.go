@@ -35,7 +35,8 @@ func init() {
 	cobra.OnInitialize(initConfig)
 	RootCmd.AddCommand(versionCmd)
 
-	RootCmd.PersistentFlags().StringVar(&configFile, "config", "", "config file (default is $HOME/.config/qc/config.toml)")
+	RootCmd.PersistentFlags().
+		StringVar(&configFile, "config", "", "config file (default is $HOME/.config/qc/config.toml)")
 	RootCmd.PersistentFlags().BoolVarP(&config.Flag.Debug, "debug", "", false, "debug mode")
 }
 

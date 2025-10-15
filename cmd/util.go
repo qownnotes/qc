@@ -3,12 +3,13 @@ package cmd
 import (
 	"bytes"
 	"fmt"
-	"github.com/qownnotes/qc/entity"
 	"io"
 	"os"
 	"os/exec"
 	"runtime"
 	"strings"
+
+	"github.com/qownnotes/qc/entity"
 
 	"github.com/fatih/color"
 	"github.com/qownnotes/qc/config"
@@ -37,7 +38,7 @@ func run(command string, r io.Reader, w io.Writer) error {
 func filter(options []string, tag string) (commands []string, err error) {
 	var snippets snippet.Snippets
 	if err := snippets.Load(); err != nil {
-		return commands, fmt.Errorf("Load snippet failed: %v", err)
+		return commands, fmt.Errorf("load snippet failed: %v", err)
 	}
 
 	if 0 < len(tag) {
@@ -59,7 +60,7 @@ func filter(options []string, tag string) (commands []string, err error) {
 	for _, s := range snippets.Snippets {
 		command := s.Command
 		if strings.ContainsAny(command, "\n") {
-			command = strings.Replace(command, "\n", "\\n", -1)
+			command = strings.ReplaceAll(command, "\n", "\\n")
 		}
 		t := fmt.Sprintf("[%s]: %s", s.Description, command)
 

@@ -15,7 +15,9 @@ func generateView(g *gocui.Gui, desc string, fill string, coords []int, editable
 		if err != gocui.ErrUnknownView {
 			return err
 		}
-		fmt.Fprint(v, fill)
+		if _, err := fmt.Fprint(v, fill); err != nil {
+			return err
+		}
 	}
 	view, _ := g.View(desc)
 	view.Title = desc
@@ -24,7 +26,6 @@ func generateView(g *gocui.Gui, desc string, fill string, coords []int, editable
 	view.Editable = editable
 
 	views = append(views, desc)
-	idxView++
 
 	return nil
 }
@@ -44,22 +45,30 @@ func GenerateParamsLayout(params map[string]string, command string) {
 	g.SetManagerFunc(layout)
 
 	maxX, maxY := g.Size()
-	generateView(g, "Command(TAB => Select next, ENTER => Execute command):",
-		command, []int{maxX / 10, maxY / 10, (maxX / 2) + (maxX / 3), maxY/10 + 5}, false)
+	if err := generateView(g, "Command(TAB => Select next, ENTER => Execute command):",
+		command, []int{maxX / 10, maxY / 10, (maxX / 2) + (maxX / 3), maxY/10 + 5}, false); err != nil {
+		log.Panicln(err)
+	}
 	idx := 0
 	for k, v := range params {
-		generateView(g, k, v, []int{maxX / 10, (maxY / 4) + (idx+1)*layoutStep,
-			maxX/10 + 20, (maxY / 4) + 2 + (idx+1)*layoutStep}, true)
+		if err := generateView(g, k, v, []int{maxX / 10, (maxY / 4) + (idx+1)*layoutStep,
+			maxX/10 + 20, (maxY / 4) + 2 + (idx+1)*layoutStep}, true); err != nil {
+			log.Panicln(err)
+		}
 		idx++
 	}
 
-	initKeybindings(g)
+	if err := initKeybindings(g); err != nil {
+		log.Panicln(err)
+	}
 
 	curView = 0
 	if idx > 0 {
 		curView = 1
 	}
-	g.SetCurrentView(views[curView])
+	if _, err := g.SetCurrentView(views[curView]); err != nil {
+		log.Panicln(err)
+	}
 
 	if err := g.MainLoop(); err != nil && err != gocui.ErrQuit {
 		log.Panicln(err)

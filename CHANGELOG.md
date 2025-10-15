@@ -1,5 +1,9 @@
 # QOwnNotes command-line snippet manager changelog
 
+## v0.6.2
+
+- Refactor the code a bit to make it cleaner and easier to maintain
+
 ## v0.6.1
 
 - The `--atuin` flag now also add commands to [Atuin](https://atuin.sh/) for multi-line commands

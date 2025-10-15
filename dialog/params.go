@@ -11,7 +11,6 @@ var (
 	views      = []string{}
 	layoutStep = 3
 	curView    = -1
-	idxView    = 0
 
 	//CurrentCommand is the command before assigning to variables
 	CurrentCommand string
@@ -22,7 +21,7 @@ var (
 func insertParams(command string, params map[string]string) string {
 	resultCommand := command
 	for k, v := range params {
-		resultCommand = strings.Replace(resultCommand, k, v, -1)
+		resultCommand = strings.ReplaceAll(resultCommand, k, v)
 	}
 	return resultCommand
 }
@@ -57,7 +56,7 @@ func evaluateParams(g *gocui.Gui, _ *gocui.View) error {
 	for _, v := range views {
 		view, _ := g.View(v)
 		res := view.Buffer()
-		res = strings.Replace(res, "\n", "", -1)
+		res = strings.ReplaceAll(res, "\n", "")
 		paramsFilled[v] = strings.TrimSpace(res)
 	}
 	FinalCommand = insertParams(CurrentCommand, paramsFilled)
