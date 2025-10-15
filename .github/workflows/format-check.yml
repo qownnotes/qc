@@ -9,11 +9,20 @@ on:
 
 jobs:
   format-check:
-    name: 📄 Check code formatting with "just fmt"
+    name: 📄 Check code formatting
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v5
-      - uses: cachix/install-nix-action@v31
+      - name: 🧰 Checkout code
+        uses: actions/checkout@v5
+      - name: ⚙️ Install Nix
+        uses: cachix/install-nix-action@v31
         with:
           nix_path: nixpkgs=channel:nixos-unstable
-      - run: nix-shell -p just --run "just fmt --ci"
+      - name: 🔒 Cache dependencies
+        uses: cachix/cachix-action@v16
+        with:
+          name: devenv
+      - name: 🔧 Install devenv.sh
+        run: nix profile add nixpkgs#devenv
+      - name: 🔨 Build the devenv shell and run tests
+        run: devenv test
