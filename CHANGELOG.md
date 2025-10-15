@@ -3,6 +3,7 @@
 ## v0.6.2
 
 - Refactor the code a bit to make it cleaner and easier to maintain
+- Update dependencies
 
 ## v0.6.1
 
