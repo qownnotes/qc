@@ -4,7 +4,7 @@
 
   enterShell = ''
     echo "🛠️ qc dev shell"
-    echo "🐹 Go version: $(go version)"
+    echo "🐹 Go version: $(go version | cut -d' ' -f3 | sed 's/^go//')"
   '';
 
   # https://devenv.sh/git-hooks/
@@ -15,7 +15,6 @@
       golines.enable = true;
       gotest.enable = true;
       govet.enable = true;
-      gitlint.enable = true;
     };
   };
 
