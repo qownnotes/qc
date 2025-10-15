@@ -2,6 +2,8 @@ name: 📄 Check formatting
 
 on:
   push:
+    branches:
+      - main
     tags-ignore:
       - "*"
   pull_request:
