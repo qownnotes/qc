@@ -1,13 +1,11 @@
 # Use `just <recipe>` to run a recipe
 # https://just.systems/man/en/
 
+import ".shared/common.just"
+
 # By default, run the `--list` command
 default:
     @just --list
-
-# Aliases
-
-alias fmt := format
 
 # Download dependencies
 [group('build')]
@@ -59,8 +57,3 @@ nix-build:
 [group('nix')]
 nix-build-force:
     nix-build -E '((import <nixpkgs> {}).callPackage (import ./default.nix) { })' --check
-
-# Format all files using pre-commit
-[group('linter')]
-format args='':
-    pre-commit run --all-files {{ args }}

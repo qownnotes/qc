@@ -15,6 +15,7 @@
 # vendor/
 qc
 dev.toml
+.shared
 
 # Devenv
 .devenv*
