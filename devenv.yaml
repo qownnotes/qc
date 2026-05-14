@@ -13,3 +13,4 @@ inputs:
 
 imports:
   - shared/common
+  - shared/go
