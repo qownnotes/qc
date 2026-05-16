@@ -1,5 +1,10 @@
 # QOwnNotes command-line snippet manager changelog
 
+## v0.6.3
+
+- On `Ctrl+C` (SIGINT), exit with code 130 and suppress error output
+  (for [#1](https://github.com/qownnotes/qc/issues/1))
+
 ## v0.6.2
 
 - Refactor the code to fix deprecations and issues and to make it cleaner and easier to maintain

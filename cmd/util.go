@@ -17,6 +17,9 @@ import (
 	"github.com/qownnotes/qc/snippet"
 )
 
+// ErrSigInt is returned when a subprocess exits due to SIGINT (Ctrl+C).
+var ErrSigInt = fmt.Errorf("interrupted")
+
 func editFile(command, file string) error {
 	command += " " + file
 	return run(command, os.Stdin, os.Stdout)
@@ -32,7 +35,15 @@ func run(command string, r io.Reader, w io.Writer) error {
 	cmd.Stderr = os.Stderr
 	cmd.Stdout = w
 	cmd.Stdin = r
-	return cmd.Run()
+	err := cmd.Run()
+	if err != nil {
+		if exitErr, ok := err.(*exec.ExitError); ok {
+			if exitErr.ExitCode() == 130 {
+				return ErrSigInt
+			}
+		}
+	}
+	return err
 }
 
 func filter(options []string, tag string) (commands []string, err error) {
@@ -83,6 +94,9 @@ func filter(options []string, tag string) (commands []string, err error) {
 		config.Conf.General.SelectCmd, strings.Join(options, " "))
 	err = run(selectCmd, strings.NewReader(text), &buf)
 	if err != nil {
+		if err == ErrSigInt {
+			return nil, ErrSigInt
+		}
 		return nil, nil
 	}
 

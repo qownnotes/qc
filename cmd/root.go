@@ -11,7 +11,7 @@ import (
 
 var (
 	configFile string
-	version    = "dev"
+	version    = "0.6.3"
 )
 
 // RootCmd represents the base command when called without any subcommands
@@ -26,6 +26,9 @@ var RootCmd = &cobra.Command{
 // Execute adds all child commands to the root command sets flags appropriately.
 func Execute() {
 	if err := RootCmd.Execute(); err != nil {
+		if err == ErrSigInt {
+			os.Exit(130)
+		}
 		fmt.Println(err)
 		os.Exit(-1)
 	}
