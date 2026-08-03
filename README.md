@@ -92,9 +92,13 @@ Use "qc [command] --help" for more information about a command.
 
 Run `qc configure`.
 
+The config file is opened with the editor from the `editor` option. If that option is empty or the
+editor is not installed, `qc` falls back to the `VISUAL` and `EDITOR` environment variables and
+finally probes common editors such as `sensible-editor`, `nvim`, `vim`, `vi` and `nano`.
+
 ```toml
 [General]
-  editor = "vim"            # your favorite text editor
+  editor = "vim"            # your favorite text editor (defaults to $VISUAL / $EDITOR)
   column = 40               # column size for list command
   selectcmd = "fzf"         # selector command for edit command (fzf or peco)
   sortby = ""               # specify how snippets get sorted (recency (default), -recency, description, -description, command, -command, output, -output)

@@ -3,7 +3,6 @@ package config
 import (
 	"fmt"
 	"os"
-	"os/exec"
 	"path/filepath"
 	"runtime"
 
@@ -67,16 +66,7 @@ func (cfg *Config) Load(file string) error {
 		return err
 	}
 
-	cfg.General.Editor = os.Getenv("EDITOR")
-	if cfg.General.Editor == "" && runtime.GOOS != "windows" {
-		if isCommandAvailable("sensible-editor") {
-			cfg.General.Editor = "sensible-editor"
-		} else if isCommandAvailable("nvim") {
-			cfg.General.Editor = "nvim"
-		} else {
-			cfg.General.Editor = "vim"
-		}
-	}
+	cfg.General.Editor = DetectEditor()
 	cfg.General.Column = 40
 	cfg.General.SelectCmd = "fzf"
 	cfg.QOwnNotes.WebSocketPort = 22222
@@ -99,12 +89,4 @@ func GetDefaultConfigDir() (dir string, err error) {
 		return "", fmt.Errorf("cannot create directory: %v", err)
 	}
 	return dir, nil
-}
-
-func isCommandAvailable(name string) bool {
-	cmd := exec.Command("/bin/sh", "-c", "command -v "+name)
-	if err := cmd.Run(); err != nil {
-		return false
-	}
-	return true
 }

@@ -1,5 +1,15 @@
 # QOwnNotes command-line snippet manager changelog
 
+## v0.6.3
+
+- `qc configure` no longer fails with `command not found` when the configured editor is not
+  installed on the system (for [#24](https://github.com/qownnotes/qc/issues/24))
+  - The editor is now resolved every time the config file is edited, falling back to the `VISUAL`
+    and `EDITOR` environment variables and then to a list of common editors
+  - A clear error message is shown when no editor could be found at all
+- The config file path is now quoted when it is passed to the editor, so paths containing spaces
+  work as expected
+
 ## v0.6.2
 
 - Refactor the code to fix deprecations and issues and to make it cleaner and easier to maintain

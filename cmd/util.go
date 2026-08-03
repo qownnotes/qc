@@ -15,10 +15,15 @@ import (
 	"github.com/qownnotes/qc/config"
 	"github.com/qownnotes/qc/dialog"
 	"github.com/qownnotes/qc/snippet"
+	"gopkg.in/alessio/shellescape.v1"
 )
 
 func editFile(command, file string) error {
-	command += " " + file
+	if runtime.GOOS == "windows" {
+		command += ` "` + file + `"`
+	} else {
+		command += " " + shellescape.Quote(file)
+	}
 	return run(command, os.Stdin, os.Stdout)
 }
 
