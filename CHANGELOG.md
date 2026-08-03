@@ -9,6 +9,8 @@
   - A clear error message is shown when no editor could be found at all
 - The config file path is now quoted when it is passed to the editor, so paths containing spaces
   work as expected
+- Update dependencies
+  - Go 1.25 is now required to build the project
 
 ## v0.6.2
 

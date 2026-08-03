@@ -13,7 +13,7 @@ buildGoModule rec {
     name = "qc";
   };
 
-  vendorHash = "sha256-ad4IuGv2y4L9cS7pf/fEVJ3wXwy9pEIegMTbUoJHPmg=";
+  vendorHash = "sha256-/nRPv6SlvWV8mHlQstV19BLou9iwGt/VvJbrpVwiTCU=";
 
   ldflags = [
     "-s"
