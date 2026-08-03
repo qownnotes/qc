@@ -45,8 +45,13 @@ func GenerateParamsLayout(params map[string]string, command string) {
 	g.SetManagerFunc(layout)
 
 	maxX, maxY := g.Size()
-	if err := generateView(g, "Command(TAB => Select next, ENTER => Execute command):",
-		command, []int{maxX / 10, maxY / 10, (maxX / 2) + (maxX / 3), maxY/10 + 5}, false); err != nil {
+	if err := generateView(
+		g,
+		"Command(TAB => Select next, ENTER => Execute command):",
+		command,
+		[]int{maxX / 10, maxY / 10, (maxX / 2) + (maxX / 3), maxY/10 + 5},
+		false,
+	); err != nil {
 		log.Panicln(err)
 	}
 	idx := 0

@@ -70,7 +70,9 @@ func FetchSnippetsData() []entity.SnippetInfo {
 				err,
 			)
 		} else {
-			log.Println("Couldn't connect to QOwnNotes websocket, but found cached data in " + snippetCacheFile)
+			log.Println(
+				"Couldn't connect to QOwnNotes websocket, but found cached data in " + snippetCacheFile,
+			)
 		}
 	}
 
