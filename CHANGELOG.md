@@ -1,5 +1,10 @@
 # QOwnNotes command-line snippet manager changelog
 
+## v0.6.4
+
+- On `Ctrl+C` (SIGINT), exit with code 130 without printing an error, including when
+  cancelling snippet selection (for [#1](https://github.com/qownnotes/qc/issues/1))
+
 ## v0.6.3
 
 - `qc configure` no longer fails with `command not found` when the configured editor is not

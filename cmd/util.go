@@ -2,12 +2,14 @@ package cmd
 
 import (
 	"bytes"
+	"errors"
 	"fmt"
 	"io"
 	"os"
 	"os/exec"
 	"runtime"
 	"strings"
+	"syscall"
 
 	"github.com/qownnotes/qc/entity"
 
@@ -17,6 +19,9 @@ import (
 	"github.com/qownnotes/qc/snippet"
 	"gopkg.in/alessio/shellescape.v1"
 )
+
+// ErrSigInt indicates that a subprocess was interrupted by Ctrl+C.
+var ErrSigInt = errors.New("interrupted")
 
 func editFile(command, file string) error {
 	if runtime.GOOS == "windows" {
@@ -37,7 +42,18 @@ func run(command string, r io.Reader, w io.Writer) error {
 	cmd.Stderr = os.Stderr
 	cmd.Stdout = w
 	cmd.Stdin = r
-	return cmd.Run()
+	err := cmd.Run()
+	var exitErr *exec.ExitError
+	if errors.As(err, &exitErr) {
+		if exitErr.ExitCode() == 130 {
+			return ErrSigInt
+		}
+		if status, ok := exitErr.Sys().(syscall.WaitStatus); ok &&
+			status.Signaled() && status.Signal() == syscall.SIGINT {
+			return ErrSigInt
+		}
+	}
+	return err
 }
 
 func filter(options []string, tag string) (commands []string, err error) {
@@ -88,6 +104,9 @@ func filter(options []string, tag string) (commands []string, err error) {
 		config.Conf.General.SelectCmd, strings.Join(options, " "))
 	err = run(selectCmd, strings.NewReader(text), &buf)
 	if err != nil {
+		if errors.Is(err, ErrSigInt) {
+			return nil, err
+		}
 		return nil, nil
 	}
 

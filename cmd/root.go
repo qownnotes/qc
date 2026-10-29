@@ -1,8 +1,10 @@
 package cmd
 
 import (
+	"errors"
 	"fmt"
 	"os"
+	"os/signal"
 	"path/filepath"
 
 	"github.com/qownnotes/qc/config"
@@ -25,7 +27,25 @@ var RootCmd = &cobra.Command{
 
 // Execute adds all child commands to the root command sets flags appropriately.
 func Execute() {
+	// The default Go signal handler terminates with SIGINT rather than a
+	// normal exit status of 130. Keep the CLI's cancellation status consistent.
+	interrupts := make(chan os.Signal, 1)
+	signal.Notify(interrupts, os.Interrupt)
+	defer signal.Stop(interrupts)
+	done := make(chan struct{})
+	defer close(done)
+	go func() {
+		select {
+		case <-interrupts:
+			os.Exit(130)
+		case <-done:
+		}
+	}()
+
 	if err := RootCmd.Execute(); err != nil {
+		if errors.Is(err, ErrSigInt) {
+			os.Exit(130)
+		}
 		fmt.Println(err)
 		os.Exit(-1)
 	}
