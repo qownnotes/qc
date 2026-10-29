@@ -2,6 +2,9 @@
 
 ## v0.6.4
 
+- `qc switch` now uses the configured searchable selector to choose a note folder,
+  with the current folder marked and a bordered layout when using fzf
+  (for [#25](https://github.com/qownnotes/qc/issues/25))
 - On `Ctrl+C` (SIGINT), exit with code 130 without printing an error, including when
   cancelling snippet selection (for [#1](https://github.com/qownnotes/qc/issues/1))
 

@@ -85,6 +85,16 @@ By default `fzf` is used for searching, but you can use `peco` by setting it wit
 On some system you might need to set `fzf --ansi` when you use the qc `--color` flag.
 If you don't want the fuzzy search of fzf, you can use the fzf `--exact` flag.
 
+## Switching note folders
+
+Run `qc switch` to choose a QOwnNotes note folder in a searchable selector. Type to
+filter, use the arrow keys to highlight a folder, and press Enter to switch. The
+current folder is listed first and marked `(current)`. Press Esc or Ctrl+C to cancel.
+
+The selector uses the `selectcmd` setting from `qc configure` (`fzf` by default;
+`peco` and custom selectors also work). With fzf, the list has a rounded border and
+hides the internal folder IDs. For scripts, `qc switch -f <id>` still switches directly.
+
 ## Usage
 
 ```
