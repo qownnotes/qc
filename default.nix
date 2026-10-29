@@ -6,7 +6,7 @@
 
 buildGoModule rec {
   pname = "qc";
-  version = "0.6.3";
+  version = "0.6.4";
 
   src = builtins.path {
     path = ./.;
