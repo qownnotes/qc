@@ -1,6 +1,6 @@
 # QOwnNotes command-line snippet manager changelog
 
-## v0.6.4
+## v0.7.0
 
 - `qc switch` now uses the configured searchable selector to choose a note folder,
   with the current folder marked and a bordered layout when using fzf
