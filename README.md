@@ -20,6 +20,25 @@ For more information on **how to add commands and configuration** please see
 The QOwnNotes command-line snippet manager is based on the wonderful
 [pet CLI Snippet Manager](https://github.com/knqyf263/pet).
 
+## Releasing
+
+Push the commit you want to release to the `release` branch:
+
+```bash
+git push origin HEAD:release
+```
+
+The release workflow reads the version from `default.nix` and checks that it matches
+the newest version heading in `CHANGELOG.md`. It runs the tests, creates the matching
+`vX.Y.Z` tag, and uses GoReleaser to publish the GitHub release, binaries, packages, and
+checksums. The same version is embedded in the binaries.
+
+For each new release, bump `default.nix` and add the matching changelog section before
+pushing. No manual tag or version input is needed. An existing tag pointing to another
+commit causes the workflow to fail rather than overwrite a release. Re-running an
+already published release at the same commit is a no-op; a failed publication can be
+retried at that commit. Tag pushes alone no longer trigger releases.
+
 ## Installation
 
 Visit the [latest release page](https://github.com/qownnotes/qc/releases/latest)
