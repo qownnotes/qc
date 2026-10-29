@@ -57,3 +57,15 @@ nix-build:
 [group('nix')]
 nix-build-force:
     nix-build -E '((import <nixpkgs> {}).callPackage (import ./default.nix) { })' --check
+
+# Run the Nix-built binary with optional arguments
+[group('nix')]
+[positional-arguments]
+nix-run *ARGS:
+    ./result/bin/qc "$@"
+
+# Build and run the Nix package with optional arguments
+[group('nix')]
+[positional-arguments]
+nix-build-run *ARGS: nix-build
+    ./result/bin/qc "$@"
